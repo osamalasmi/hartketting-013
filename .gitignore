@@ -1,0 +1,9 @@
+# PlatformIO
+.pio/
+
+# VS Code: alleen de lijst met aanbevolen extensies delen
+.vscode/*
+!.vscode/extensions.json
+
+# macOS
+.DS_Store
