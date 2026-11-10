@@ -2,7 +2,7 @@
 
 Prototype voor het Valentijnsfeest "Smerrig" van Poppodium 013 (Hackathon 6, Niet-zo-single-feestje).
 
-Een hartketting met een led die knippert op je echte hartslag. De ketting haalt de hartslag via Bluetooth uit je Whoop. Met een knop kies je je status: single (groen), bezet (blauw) of ingewikkeld (geel). Boven de 100 bpm wordt de led rood en knippert hij snel.
+Een hartketting met een led die knippert op je hartslag. Met een korte druk op de knop kies je je status: single (groen), bezet (rood) of ingewikkeld (oranje). Bij het aanzetten meet de ketting je rustpols. Ligt je hartslag 25% daarboven, dan knippert de led feller. Met een lange druk verberg je je hartslag.
 
 ## Team
 
@@ -12,9 +12,9 @@ Een hartketting met een led die knippert op je echte hartslag. De ketting haalt 
 ## Techniek
 
 - ESP32 DevKit
-- Koppeling met de Whoop via Bluetooth (BLE). De Whoop zendt de hartslag uit met "Broadcast Heart Rate". De ESP32 leest die via de standaard Heart Rate Service.
-- RGB-led, knop en buzzer
-- Reserve: in Wokwi werkt Bluetooth niet. Daar doet een potmeter de hartslag na.
+- RGB-led en knop
+- Prototype in Wokwi. Een potmeter doet de hartslag na.
+- Echte product: hartslag uit een sensor in de ketting, of uit een Whoop of smartwatch via Bluetooth (BLE).
 
 ## Mappen
 

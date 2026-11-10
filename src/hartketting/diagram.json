@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "author": "Osama en Ahmad",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "led",
+      "top": -60,
+      "left": -220,
+      "attrs": { "common": "cathode" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rRood",
+      "top": 80,
+      "left": -250,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rGroen",
+      "top": 80,
+      "left": -210,
+      "rotate": 90,
+      "attrs": { "value": "100" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rBlauw",
+      "top": 80,
+      "left": -170,
+      "rotate": 90,
+      "attrs": { "value": "100" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "knop",
+      "top": 220,
+      "left": -220,
+      "attrs": { "color": "red", "label": "Status" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot",
+      "top": 150,
+      "left": 220,
+      "attrs": { "label": "Hartslag" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "esp:25", "rRood:1", "red", [] ],
+    [ "rRood:2", "led:R", "red", [] ],
+    [ "esp:26", "rGroen:1", "green", [] ],
+    [ "rGroen:2", "led:G", "green", [] ],
+    [ "esp:27", "rBlauw:1", "blue", [] ],
+    [ "rBlauw:2", "led:B", "blue", [] ],
+    [ "led:COM", "esp:GND.1", "black", [] ],
+
+    [ "esp:33", "knop:1.r", "orange", [] ],
+    [ "knop:2.r", "esp:GND.1", "black", [] ],
+
+    [ "pot:VCC", "esp:3V3", "red", [] ],
+    [ "pot:SIG", "esp:VP", "yellow", [] ],
+    [ "pot:GND", "esp:GND.2", "black", [] ]
+  ],
+  "dependencies": {}
+}
