@@ -12,7 +12,7 @@ Een hartketting met een led die knippert op je hartslag. Met een korte druk op d
 ## Techniek
 
 - ESP32 DevKit
-- RGB-led en knop
+- Drie statusleds (groen, rood, oranje), knop en potmeter op een breadboard
 - Prototype in Wokwi. Een potmeter doet de hartslag na.
 - Echte product: hartslag uit een sensor in de ketting, of uit een Whoop of smartwatch via Bluetooth (BLE).
 
@@ -21,4 +21,4 @@ Een hartketting met een led die knippert op je hartslag. Met een korte druk op d
 | Map | Inhoud |
 |-----|--------|
 | `docs/` | Het ontwerp: [docs/ontwerp.md](docs/ontwerp.md) |
-| `src/hartketting/` | De code voor de ESP32 (komt in fase 2) |
+| `src/hartketting/` | De code voor de ESP32 (`hartketting.ino`) en het Wokwi-schema (`diagram.json`) |

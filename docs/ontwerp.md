@@ -37,11 +37,11 @@ Als bezoeker wil ik met een knop mijn status kiezen, zodat anderen zien of ik be
 
 Als bezoeker wil ik dat mijn ketting knippert op mijn hartslag, zodat het hart echt leeft.
 
-- AC-02.1: Het systeem leest de hartslag uit via de potmeter op A0, omgerekend naar 50–180 BPM.
+- AC-02.1: Het systeem leest de hartslag uit via de potmeter (GPIO 4), omgerekend naar 50–180 BPM.
 - AC-02.2: De led knippert in de statuskleur, met precies één knipper per hartslag (bij 60 BPM is dat één keer per seconde).
 - AC-02.3: De hartslag wordt niet opgeslagen en niet verzonden.
 
-A0 is op de ESP32 GPIO 36. Zie hoofdstuk 5.
+Waarom GPIO 4: zie hoofdstuk 5.
 
 ### US-03: Spanning zichtbaar (eis)
 
@@ -95,7 +95,7 @@ Reden: de rest van de code hoeft niet te weten waar de hartslag vandaan komt. Wi
 
 | Bron | Waar | Hoe |
 |------|------|-----|
-| Potmeter | Prototype (Wokwi en breadboard) | `analogRead` op A0 geeft 0 tot 4095. Dat rekenen we om naar 50 tot 180 bpm met `map()`. |
+| Potmeter | Prototype (Wokwi en breadboard) | `analogRead` op GPIO 4 geeft 0 tot 4095. Dat rekenen we om naar 50 tot 180 bpm met `map()`. |
 | Ingebouwde sensor | Echte product, zonder wearable | Een hartslagsensor in de ketting. In het prototype doet de potmeter dit na. |
 | Whoop of smartwatch | Echte product, met wearable (US-05) | Via Bluetooth, zie hieronder. |
 
@@ -139,29 +139,37 @@ sequenceDiagram
 
 ## 5. Onderdelen en bedrading
 
-Bord: ESP32 DevKit (30 of 38 pinnen).
+Bord: ESP32 DevKit, 30 pinnen. Alles staat op één breadboard.
 
-| Onderdeel | Pin ESP32 | Aansluiting | Waarom deze pin |
-|-----------|-----------|-------------|-----------------|
-| RGB-led, rood | GPIO 25 | Via weerstand 220 Ω naar de rode poot | Gewone uitgang met PWM, geen strapping pin |
-| RGB-led, groen | GPIO 26 | Via weerstand 100 Ω naar de groene poot | Gewone uitgang met PWM, geen strapping pin |
-| RGB-led, blauw | GPIO 27 | Via weerstand 100 Ω naar de blauwe poot | Gewone uitgang met PWM, geen strapping pin |
-| RGB-led, lange poot | GND | Direct naar GND (common cathode) | |
-| Knop | GPIO 33 | Andere kant van de knop naar GND. `INPUT_PULLUP` | Heeft een interne pull-up |
-| Potmeter (hartslag) | A0 = GPIO 36 (VP) | Buitenste poten naar 3V3 en GND, middelste naar A0 | ADC1, alleen ingang |
+De ESP32 bedekt op het breadboard kolom b tot en met i. Alleen aan de kant van 3V3 blijft een rij gaatjes vrij (kolom a).
+Daarom gebruiken we alleen pinnen aan die kant.
 
-(nog toevoegen: screenshot van het Wokwi-schema als `docs/bedrading-wokwi.png`, en een foto van het breadboard)
+| Onderdeel | Pin ESP32 | Gat ESP-pin | Aansluiting op het breadboard | Waarom deze pin |
+|-----------|-----------|-------------|-------------------------------|-----------------|
+| Stroom + | 3V3 | a1 | a1 → + rail | |
+| Stroom − | GND | a2 | a2 → − rail | |
+| Led groen (single) | GPIO 21 | a11 | a11 → a20, weerstand 470 Ω b20–b23, led lang e23, kort e24, a24 → − rail | Gewone uitgang met PWM |
+| Led rood (bezet) | GPIO 19 | a10 | a10 → a27, weerstand 470 Ω b27–b30, led lang e30, kort e31, a31 → − rail | Gewone uitgang met PWM |
+| Led oranje (ingewikkeld) | GPIO 18 | a9 | a9 → a34, weerstand 470 Ω b34–b37, led lang e37, kort e38, a38 → − rail | Gewone uitgang met PWM |
+| Knop | GPIO 23 | a15 | Knop over de middengleuf (e42, f42, e44, f44). a15 → a42, a44 → − rail. `INPUT_PULLUP` | Heeft een interne pull-up |
+| Potmeter (hartslag) | GPIO 4 | a5 | Pootjes c48, c49, c50. a48 → − rail, a49 → a5, a50 → + rail | Enige analoge ingang aan de vrije kant |
 
-Het schema voor Wokwi staat in [`src/hartketting/diagram.json`](../src/hartketting/diagram.json).
+Bouwtekening: ![Breadboard](bedrading-breadboard.png)
+
+Het schema voor Wokwi staat in [`src/hartketting/diagram.json`](../src/hartketting/diagram.json). De code staat in [`src/hartketting/hartketting.ino`](../src/hartketting/hartketting.ino).
+
+(nog toevoegen: foto van het breadboard)
 
 Onderbouwing:
 
+- **Pinnen aan één kant.** De ESP32 is zo breed dat hij aan één kant alle gaatjes van het breadboard bedekt. Alle pinnen die we nodig hebben (3V3, GND, GPIO 4, 18, 19, 21 en 23) zitten aan de vrije kant. Zo past alles op één breadboard.
 - **Geen strapping pins.** GPIO 0, 2, 5, 12 en 15 bepalen hoe de ESP32 opstart. Hangt daar iets aan, dan start hij soms niet. Die gebruiken we dus niet.
 - **3,3 V.** De pinnen van de ESP32 kunnen niet tegen 5 V. De potmeter sluiten we daarom aan op 3V3 en niet op 5V.
-- **Weerstanden.** Een weerstand beperkt de stroom, zodat de led en de pin niet stuk gaan. Rood heeft ongeveer 2 V nodig, groen en blauw ongeveer 3 V. Bij 3,3 V blijft er voor groen en blauw weinig over. Daarom krijgen zij een kleinere weerstand (100 Ω). Anders branden ze te zwak.
-- **PWM.** Met PWM gaat een pin heel snel aan en uit. Het oog ziet dat als minder fel. Zo maken we 40% helderheid (US-03, US-04) en mengen we oranje uit rood en een beetje groen (US-01). Op de ESP32 doen we dat met `ledcWrite`.
+- **Drie losse leds in plaats van een RGB-led.** We hadden geen RGB-led, wel losse leds in groen, rood en oranje. Per status brandt één led. Kleuren mengen is dan niet nodig. In het echte product kan het weer één RGB-led worden.
+- **Weerstanden van 470 Ω.** Een weerstand beperkt de stroom, zodat de led en de pin niet stuk gaan. We hadden 470 Ω, 1 kΩ en 10 kΩ. 470 Ω is de kleinste en geeft dus het felste licht. Op 3,3 V brandt rood goed, groen en oranje iets zwakker.
+- **PWM.** Met PWM gaat een pin heel snel aan en uit. Het oog ziet dat als minder fel. Zo maken we 40% helderheid (US-03, US-04).
 - **INPUT_PULLUP.** De pin is zonder indrukken hoog en met indrukken laag. We hebben dan geen losse weerstand nodig voor de knop.
-- **A0 en ADC1.** De user story noemt A0. Op de ESP32 is A0 GPIO 36, op het bord "VP" genoemd. Die hoort bij ADC1. ADC2 deelt hardware met Bluetooth en geeft dan foute waarden. Voor US-05 kiezen we dus ADC1.
+- **GPIO 4 is ADC2.** Aan de vrije kant zit geen ADC1-pin. ADC2 werkt niet betrouwbaar als de radio (wifi, en mogelijk Bluetooth) aan staat. In het prototype gebruiken we geen radio, dus dat is geen probleem. In het echte product komt de hartslag uit de sensor of de wearable (US-05). De sensor sluiten we dan aan op een ADC1-pin, bijvoorbeeld GPIO 36 (VP).
 - **Geen buzzer.** Geen enkele user story vraagt om geluid. Op een luid feest hoor je een piep ook niet.
 
 ## 6. Gegevens
@@ -195,8 +203,8 @@ We slaan niets op. Alles staat alleen in het werkgeheugen en is weg als de ketti
 | `LANG_DRUKKEN_MS` | 2000 | Vanaf hoe lang een druk "lang" is (AC-01.1, AC-04.1) |
 | `FLITS_MS` | 100 | Hoe lang de led aan is per knipper |
 | `ONTDENDER_MS` | 50 | Wachttijd tegen het denderen van de knop |
-| `PIN_ROOD`, `PIN_GROEN`, `PIN_BLAUW` | 25, 26, 27 | Pinnen van de led |
-| `PIN_KNOP`, `PIN_POTMETER` | 33, A0 | Overige pinnen |
+| `PIN_GROEN`, `PIN_ROOD`, `PIN_ORANJE` | 21, 19, 18 | Pinnen van de drie leds |
+| `PIN_KNOP`, `PIN_POT` | 23, 4 | Overige pinnen |
 
 Onderbouwing:
 
@@ -207,13 +215,13 @@ Onderbouwing:
 
 ### Kleuren
 
-| Status | Kleur | Rood | Groen | Blauw |
-|--------|-------|------|-------|-------|
-| Single | Groen | 0 | 255 | 0 |
-| Bezet | Rood | 255 | 0 | 0 |
-| Ingewikkeld | Oranje | 255 | 80 | 0 |
+| Status | Led | Pin |
+|--------|-----|-----|
+| Single | Groen | GPIO 21 |
+| Bezet | Rood | GPIO 19 |
+| Ingewikkeld | Oranje | GPIO 18 |
 
-Deze waarden gelden bij 100% helderheid. Bij 40% vermenigvuldigen we ze met 0,4.
+Per status brandt alleen de led van die status. De andere twee zijn uit.
 
 | Situatie | Helderheid | Knipperen |
 |----------|------------|-----------|
