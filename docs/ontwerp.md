@@ -166,7 +166,7 @@ Daarom gebruiken we alleen pinnen aan die kant.
 | Led rood (bezet) | GPIO 19 | a10 | a10 → a27, weerstand 470 Ω b27–b30, led lang e30, kort e31, a31 → − rail | Gewone uitgang met PWM |
 | Led blauw (ingewikkeld) | GPIO 18 | a9 | a9 → a34, weerstand 470 Ω b34–b37, led lang e37, kort e38, a38 → − rail | Gewone uitgang met PWM |
 | Knop | GPIO 23 | a15 | Knop over de middengleuf (e42, f42, e44, f44). a15 → a42, a44 → − rail. `INPUT_PULLUP` | Heeft een interne pull-up |
-| Potmeter (hartslag) | GPIO 4 | a5 | Pootjes c48, c49, c50. a48 → − rail, a49 → a5, a50 → + rail | Enige analoge ingang aan de vrije kant |
+| Potmeter (hartslag) | GPIO 4 | a5 | Pootjes c48, c50, c52 (één gaatje ertussen). a48 → − rail, a50 → a5, a52 → + rail | Enige analoge ingang aan de vrije kant |
 
 Bouwtekening: ![Breadboard](bedrading-breadboard.png)
 
