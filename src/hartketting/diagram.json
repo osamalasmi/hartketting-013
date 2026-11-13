@@ -32,11 +32,11 @@
     },
     {
       "type": "wokwi-led",
-      "id": "ledOranje",
+      "id": "ledBlauw",
       "top": -90,
       "left": 360,
       "attrs": {
-        "color": "orange",
+        "color": "blue",
         "label": "Ingewikkeld"
       }
     },
@@ -130,13 +130,13 @@
     [
       "esp:18",
       "r3:1",
-      "orange",
+      "blue",
       []
     ],
     [
       "r3:2",
-      "ledOranje:A",
-      "orange",
+      "ledBlauw:A",
+      "blue",
       []
     ],
     [
@@ -152,7 +152,7 @@
       []
     ],
     [
-      "ledOranje:C",
+      "ledBlauw:C",
       "esp:GND.2",
       "black",
       []

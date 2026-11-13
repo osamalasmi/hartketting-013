@@ -2,7 +2,7 @@
 
 Prototype voor het Valentijnsfeest "Smerrig" van Poppodium 013 (Hackathon 6, Niet-zo-single-feestje).
 
-Een hartketting met een led die knippert op je hartslag. Met een korte druk op de knop kies je je status: single (groen), bezet (rood) of ingewikkeld (oranje). Bij het aanzetten meet de ketting je rustpols. Ligt je hartslag 25% daarboven, dan knippert de led feller. Met een lange druk verberg je je hartslag.
+Een hartketting met een led die knippert op je hartslag. Met een korte druk op de knop kies je je status: single (groen), bezet (rood) of ingewikkeld (blauw). Bij het aanzetten meet de ketting je rustpols. Ligt je hartslag 25% daarboven, dan knippert de led feller. Met een lange druk verberg je je hartslag.
 
 ## Team
 
@@ -12,7 +12,7 @@ Een hartketting met een led die knippert op je hartslag. Met een korte druk op d
 ## Techniek
 
 - ESP32 DevKit
-- Drie statusleds (groen, rood, oranje), knop en potmeter op een breadboard
+- Drie statusleds (groen, rood, blauw), knop en potmeter op een breadboard
 - Prototype in Wokwi. Een potmeter doet de hartslag na.
 - Echte product: hartslag uit een sensor in de ketting, of uit een Whoop of smartwatch via Bluetooth (BLE).
 
