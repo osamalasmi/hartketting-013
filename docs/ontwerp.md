@@ -115,7 +115,7 @@ Reden: de rest van de code hoeft niet te weten waar de hartslag vandaan komt. Wi
 
 ### Wearable koppelen (US-05, echte product)
 
-Dit bouwen we niet in het prototype. In Wokwi werkt Bluetooth niet. We beschrijven het wel, zodat het echte product verder kan.
+In Wokwi werkt Bluetooth niet. Op het echte breadboard bouwen wij dit wel, zodat we echte hartslagdata van een Whoop als testdata kunnen gebruiken. In Wokwi blijft de potmeter de bron.
 
 De Whoop kan zijn hartslag uitzenden met "Broadcast Heart Rate".
 Hij gebruikt daarvoor de standaard van Bluetooth: de Heart Rate Service. Smartwatches en hartslagbanden gebruiken dezelfde standaard.
