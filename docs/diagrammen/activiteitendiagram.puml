@@ -1,0 +1,63 @@
+@startuml activiteitendiagram
+title Activiteitendiagram hoofdlus Hartslagketting (hoofdstuk 8)
+skinparam defaultFontName Arial
+skinparam ActivityBackgroundColor #FFF8F0
+skinparam ActivityBorderColor #993333
+
+|Bezoeker|
+start
+:Zet de ketting aan;
+|Ketting (ESP32)|
+:setup(): pinnen instellen
+(3 leds = OUTPUT, knop = INPUT_PULLUP);
+:startTijd = millis()
+rustpols-meting start (10 s);
+repeat :begin van loop();
+  |Bezoeker|
+  if (Drukt op de knop?) then (ja)
+    :Laat de knop los;
+    |Ketting (ESP32)|
+    :duur = nu - knopIngedruktSinds;
+    if (duur >= 2 s?) then (lang)
+      :stilstand = !stilstand;
+    elseif (duur >= 50 ms?) then (kort)
+      :status = volgende status
+      (single -> bezet -> ingewikkeld -> single);
+    else (dender)
+    endif
+  else (nee)
+  endif
+  |Ketting (ESP32)|
+  :bpm = leesHartslag();
+  if (metenKlaar?) then (nee)
+    if (10 s voorbij?) then (nee)
+      :bpmSom += bpm
+      aantalMetingen++;
+    else (ja)
+      :rustpols = bpmSom / aantalMetingen
+      grens = rustpols x 1,25 (naar boven)
+      metenKlaar = true;
+    endif
+  else (ja)
+  endif
+  if (stilstand?) then (ja)
+    :zetLeds(40%)
+    led brandt continu in de statuskleur;
+  else (nee)
+    if (tijd voor de volgende knipper?\n(nu - laatsteKnipper >= 60000 / bpm)) then (ja)
+      :laatsteKnipper = nu;
+      if (metenKlaar en bpm >= grens?) then (ja)
+        :knipper in de statuskleur op 100%;
+      else (nee)
+        :knipper in de statuskleur op 40%;
+      endif
+    else (nee)
+    endif
+  endif
+  :delay(5);
+repeat while (ketting aan?) is (ja)
+-> nee;
+|Bezoeker|
+:Zet de ketting uit;
+stop
+@enduml

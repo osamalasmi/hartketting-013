@@ -1,0 +1,61 @@
+@startuml klassendiagram
+title Klassendiagram Hartslagketting (hoofdstuk 6)
+skinparam defaultFontName Arial
+skinparam classAttributeIconSize 0
+
+enum Status {
+  SINGLE
+  BEZET
+  INGEWIKKELD
+}
+
+class Ketting {
+  - status : Status = SINGLE
+  - bpm : int = 0
+  - stilstand : bool = false
+  - metenKlaar : bool = false
+  - bpmSom : long = 0
+  - aantalMetingen : int = 0
+  - rustpols : int = 0
+  - grens : int = 0
+  - startTijd : unsigned long = 0
+  - laatsteKnipper : unsigned long = 0
+  - knopIngedruktSinds : unsigned long = 0
+  - knopWasIngedrukt : bool = false
+  --
+  + setup() : void
+  + loop() : void
+  - leesHartslag() : int
+  - verwerkKnop() : void
+  - meetRustpols(bpm : int, nu : unsigned long) : void
+  - zetLeds(procent : int) : void
+}
+
+interface HartslagBron {
+  + leesHartslag() : int
+}
+
+class Potmeter {
+  - PIN_POT : int = 4
+  + leesHartslag() : int
+}
+
+class Wearable <<echte product>> {
+  - naam : String
+  + leesHartslag() : int
+}
+
+Ketting --> "1" Status : status
+Ketting --> "1" HartslagBron : leest bpm via
+HartslagBron <|.. Potmeter
+HartslagBron <|.. Wearable
+
+note bottom of Potmeter
+  Prototype: analogRead 0-4095
+  -> map() naar 50-180 BPM
+end note
+note bottom of Wearable
+  Alleen echte product (US-05):
+  BLE Heart Rate Service 0x180D
+end note
+@enduml

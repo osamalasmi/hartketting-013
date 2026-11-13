@@ -5,7 +5,7 @@
 // Pinnen
 const int PIN_GROEN = 21;   // single
 const int PIN_ROOD = 19;    // bezet
-const int PIN_ORANJE = 18;  // ingewikkeld
+const int PIN_BLAUW = 18;   // ingewikkeld
 const int PIN_KNOP = 23;
 const int PIN_POT = 4;      // ADC2: werkt niet als de radio aan staat
 
@@ -21,7 +21,7 @@ const unsigned long FLITS_MS = 100;          // zo lang is de led aan per knippe
 const unsigned long ONTDENDER_MS = 50;       // een druk korter dan dit telt niet
 
 enum Status { SINGLE, BEZET, INGEWIKKELD };
-const int LEDS[3] = {PIN_GROEN, PIN_ROOD, PIN_ORANJE};  // volgorde = Status
+const int LEDS[3] = {PIN_GROEN, PIN_ROOD, PIN_BLAUW};  // volgorde = Status
 const char* NAMEN[3] = {"Single", "Bezet", "Ingewikkeld"};
 
 Status status = SINGLE;  // AC-01.3
