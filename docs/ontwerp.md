@@ -172,7 +172,7 @@ Bouwtekening: ![Breadboard](bedrading-breadboard.png)
 
 Het schema voor Wokwi staat in [`src/hartketting/diagram.json`](../src/hartketting/diagram.json). De code staat in [`src/hartketting/hartketting.ino`](../src/hartketting/hartketting.ino).
 
-(nog toevoegen: foto van het breadboard)
+![Prototype op het breadboard](foto-prototype.jpg)
 
 Onderbouwing:
 
@@ -320,7 +320,9 @@ Reden: tijdens een `delay()` staat de code stil. Dan mist de ketting een druk op
 
 Bron: [`mockup-ketting.svg`](mockup-ketting.svg). Links het vooraanzicht met de led en de knop, rechts het achteraanzicht met de sensor. Onderaan de toestanden: single (groen), bezet (rood), ingewikkeld (blauw), spanning (fel) en stilstand (gedimd, knippert niet).
 
-(nog toevoegen: foto van het prototype)
+![Prototype op het breadboard](foto-prototype.jpg)
+
+*Het prototype: ESP32, drie statusleds (groen, rood, blauw), knop en potmeter op één breadboard.*
 
 ## 10. Privacy, ethiek, veiligheid en toegankelijkheid
 
