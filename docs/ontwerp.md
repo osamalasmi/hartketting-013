@@ -2,7 +2,7 @@
 
 Hackathon 6, Niet-zo-single-feestje. Opdrachtgever: Poppodium 013, feest "Smerrig".
 Team: Osama en Ahmad.
-Versie 0.2: aangepast aan de user stories met acceptatiecriteria.
+Versie 0.3: schematechnieken per ontwerplaag (klassendiagram, use case diagram, activiteitendiagram) en mock-up toegevoegd. De derde led is blauw.
 
 ## 1. Het idee
 
@@ -30,7 +30,7 @@ In het echte product komt de hartslag uit een sensor in de ketting, of uit een g
 Als bezoeker wil ik met een knop mijn status kiezen, zodat anderen zien of ik beschikbaar ben.
 
 - AC-01.1: Kort drukken (korter dan 2 s) wisselt de status: single → bezet → ingewikkeld → single.
-- AC-01.2: De led toont groen bij single, rood bij bezet en oranje bij ingewikkeld.
+- AC-01.2: De led toont groen bij single, rood bij bezet en blauw bij ingewikkeld.
 - AC-01.3: Na het aanzetten is de status single.
 
 ### US-02: Hart klopt mee (eis)
@@ -64,6 +64,20 @@ Als bezoeker met een WHOOP of smartwatch wil ik die aan mijn ketting koppelen, z
 
 - AC-05.1: De ketting leest de hartslag via het standaard BLE-hartslagprofiel.
 - AC-05.2: Is er geen wearable gekoppeld, dan gebruikt de ketting de ingebouwde sensor.
+
+### Gebruikersperspectief: use case diagram
+
+![Use case diagram](diagrammen/usecasediagram.png)
+
+Bron: [`diagrammen/usecasediagram.puml`](diagrammen/usecasediagram.puml)
+
+- **Bezoeker (drager)** draagt de ketting en bedient hem met de knop. Hij kiest zijn status (US-01), zijn hart klopt mee (US-02), zijn spanning wordt zichtbaar (US-03) en hij kan zijn hartslag verbergen (US-04). In het echte product kan hij ook zijn wearable koppelen (US-05).
+- **Andere bezoeker** bedient niets. Hij kijkt alleen naar de ketting: de kleur (status), het knipperen (hartslag) en de helderheid (spanning). Voor hem is de ketting bedoeld.
+- **Wearable (WHOOP of smartwatch)** is een secundaire actor. Hij levert de hartslag via Bluetooth, maar alleen in het echte product (US-05). In het prototype doet de potmeter de hartslag na.
+
+Spanning tonen kan niet zonder rustpols: de grens is rustpols × 1,25. Daarom is *Rustpols meten* een `<<include>>` van *Spanning tonen*.
+
+Een mock-up van de ketting staat in hoofdstuk 9.
 
 ## 3. Keuze microcontroller
 
@@ -150,7 +164,7 @@ Daarom gebruiken we alleen pinnen aan die kant.
 | Stroom − | GND | a2 | a2 → − rail | |
 | Led groen (single) | GPIO 21 | a11 | a11 → a20, weerstand 470 Ω b20–b23, led lang e23, kort e24, a24 → − rail | Gewone uitgang met PWM |
 | Led rood (bezet) | GPIO 19 | a10 | a10 → a27, weerstand 470 Ω b27–b30, led lang e30, kort e31, a31 → − rail | Gewone uitgang met PWM |
-| Led oranje (ingewikkeld) | GPIO 18 | a9 | a9 → a34, weerstand 470 Ω b34–b37, led lang e37, kort e38, a38 → − rail | Gewone uitgang met PWM |
+| Led blauw (ingewikkeld) | GPIO 18 | a9 | a9 → a34, weerstand 470 Ω b34–b37, led lang e37, kort e38, a38 → − rail | Gewone uitgang met PWM |
 | Knop | GPIO 23 | a15 | Knop over de middengleuf (e42, f42, e44, f44). a15 → a42, a44 → − rail. `INPUT_PULLUP` | Heeft een interne pull-up |
 | Potmeter (hartslag) | GPIO 4 | a5 | Pootjes c48, c49, c50. a48 → − rail, a49 → a5, a50 → + rail | Enige analoge ingang aan de vrije kant |
 
@@ -165,8 +179,8 @@ Onderbouwing:
 - **Pinnen aan één kant.** De ESP32 is zo breed dat hij aan één kant alle gaatjes van het breadboard bedekt. Alle pinnen die we nodig hebben (3V3, GND, GPIO 4, 18, 19, 21 en 23) zitten aan de vrije kant. Zo past alles op één breadboard.
 - **Geen strapping pins.** GPIO 0, 2, 5, 12 en 15 bepalen hoe de ESP32 opstart. Hangt daar iets aan, dan start hij soms niet. Die gebruiken we dus niet.
 - **3,3 V.** De pinnen van de ESP32 kunnen niet tegen 5 V. De potmeter sluiten we daarom aan op 3V3 en niet op 5V.
-- **Drie losse leds in plaats van een RGB-led.** We hadden geen RGB-led, wel losse leds in groen, rood en oranje. Per status brandt één led. Kleuren mengen is dan niet nodig. In het echte product kan het weer één RGB-led worden.
-- **Weerstanden van 470 Ω.** Een weerstand beperkt de stroom, zodat de led en de pin niet stuk gaan. We hadden 470 Ω, 1 kΩ en 10 kΩ. 470 Ω is de kleinste en geeft dus het felste licht. Op 3,3 V brandt rood goed, groen en oranje iets zwakker.
+- **Drie losse leds in plaats van een RGB-led.** We hadden geen RGB-led, wel losse leds in groen, rood en blauw. Per status brandt één led. Kleuren mengen is dan niet nodig. In het echte product kan het weer één RGB-led worden.
+- **Weerstanden van 470 Ω.** Een weerstand beperkt de stroom, zodat de led en de pin niet stuk gaan. We hadden 470 Ω, 1 kΩ en 10 kΩ. 470 Ω is de kleinste en geeft dus het felste licht. Op 3,3 V brandt rood goed, groen en blauw iets zwakker.
 - **PWM.** Met PWM gaat een pin heel snel aan en uit. Het oog ziet dat als minder fel. Zo maken we 40% helderheid (US-03, US-04).
 - **INPUT_PULLUP.** De pin is zonder indrukken hoog en met indrukken laag. We hebben dan geen losse weerstand nodig voor de knop.
 - **GPIO 4 is ADC2.** Aan de vrije kant zit geen ADC1-pin. ADC2 werkt niet betrouwbaar als de radio (wifi, en mogelijk Bluetooth) aan staat. In het prototype gebruiken we geen radio, dus dat is geen probleem. In het echte product komt de hartslag uit de sensor of de wearable (US-05). De sensor sluiten we dan aan op een ADC1-pin, bijvoorbeeld GPIO 36 (VP).
@@ -175,6 +189,14 @@ Onderbouwing:
 ## 6. Gegevens
 
 We slaan niets op. Alles staat alleen in het werkgeheugen en is weg als de ketting uit gaat (AC-02.3).
+
+### Klassendiagram
+
+![Klassendiagram](diagrammen/klassendiagram.png)
+
+Bron: [`diagrammen/klassendiagram.puml`](diagrammen/klassendiagram.puml)
+
+De Arduino-code heeft geen echte klassen, maar alle variabelen en functies horen bij één ding: de ketting. Daarom tekenen we ze als één klasse `Ketting` met de variabelen hieronder als attributen en de functies uit de code als methodes. `Status` is een enum, want een ketting heeft altijd precies één van de drie statussen. `HartslagBron` laat zien waarom alles via `leesHartslag()` loopt: in het prototype is de bron de potmeter, in het echte product de sensor of een wearable (US-05), zonder dat de rest van de code verandert.
 
 ### Variabelen
 
@@ -205,7 +227,7 @@ We slaan niets op. Alles staat alleen in het werkgeheugen en is weg als de ketti
 | `LANG_DRUKKEN_MS` | 2000 | Vanaf hoe lang een druk "lang" is (AC-01.1, AC-04.1) |
 | `FLITS_MS` | 100 | Hoe lang de led aan is per knipper |
 | `ONTDENDER_MS` | 50 | Een druk korter dan dit telt niet. Zo telt het denderen van de knop niet als druk |
-| `PIN_GROEN`, `PIN_ROOD`, `PIN_ORANJE` | 21, 19, 18 | Pinnen van de drie leds |
+| `PIN_GROEN`, `PIN_ROOD`, `PIN_BLAUW` | 21, 19, 18 | Pinnen van de drie leds |
 | `PIN_KNOP`, `PIN_POT` | 23, 4 | Overige pinnen |
 
 Onderbouwing:
@@ -221,7 +243,7 @@ Onderbouwing:
 |--------|-----|-----|
 | Single | Groen | GPIO 21 |
 | Bezet | Rood | GPIO 19 |
-| Ingewikkeld | Oranje | GPIO 18 |
+| Ingewikkeld | Blauw | GPIO 18 |
 
 Per status brandt alleen de led van die status. De andere twee zijn uit.
 
@@ -275,32 +297,11 @@ De meting van de rustpols loopt ook door als de stilstand aan staat. Zet je de s
 
 ## 8. Activiteitendiagram van de hoofdlus
 
-```mermaid
-flowchart TD
-    A([Begin van de lus]) --> B{Knop net losgelaten?}
-    B -- nee --> F
-    B -- ja --> C{Ingedrukt langer dan 2 s?}
-    C -- nee --> D[Kies de volgende status]
-    C -- ja --> E[Zet stilstand aan of uit]
-    D --> F[bpm = leesHartslag]
-    E --> F
-    F --> G{Meten nog bezig?}
-    G -- ja --> H[Tel bpm op bij de som]
-    H --> I{10 s voorbij?}
-    I -- ja --> J[rustpols = gemiddelde, grens = rustpols x 1,25, metenKlaar wordt waar]
-    I -- nee --> K
-    J --> K
-    G -- nee --> K{Stilstand aan?}
-    K -- ja --> L[Led continu in de statuskleur op 40%]
-    K -- nee --> M{Tijd voor de volgende knipper?}
-    M -- nee --> Z
-    M -- ja --> N{metenKlaar en bpm minstens de grens?}
-    N -- ja --> O[Knipper in de statuskleur op 100%]
-    N -- nee --> P[Knipper in de statuskleur op 40%]
-    L --> Z([Einde van de lus, begin opnieuw])
-    O --> Z
-    P --> Z
-```
+![Activiteitendiagram hoofdlus](diagrammen/activiteitendiagram.png)
+
+Bron: [`diagrammen/activiteitendiagram.puml`](diagrammen/activiteitendiagram.puml)
+
+Het diagram heeft twee swimlanes. De bezoeker zet de ketting aan en drukt op de knop. De ketting (ESP32) doet de rest: in `setup()` de pinnen instellen en de meting van de rustpols starten, en daarna steeds opnieuw de lus `loop()`.
 
 Kort of lang drukken bepalen we bij het loslaten. We onthouden wanneer de knop werd ingedrukt en rekenen bij het loslaten uit hoe lang dat duurde.
 
@@ -315,7 +316,9 @@ Reden: tijdens een `delay()` staat de code stil. Dan mist de ketting een druk op
 - **Ingebouwde sensor (echte product):** aan de achterkant van het hart, tegen de huid.
 - **Stroom:** in het prototype via de USB-kabel. In het echte product een kleine batterij in het hart.
 
-(nog toevoegen: schets van de ketting met de plek van de led en de knop)
+![Mock-up van de ketting](mockup-ketting.png)
+
+Bron: [`mockup-ketting.svg`](mockup-ketting.svg). Links het vooraanzicht met de led en de knop, rechts het achteraanzicht met de sensor. Onderaan de toestanden: single (groen), bezet (rood), ingewikkeld (blauw), spanning (fel) en stilstand (gedimd, knippert niet).
 
 (nog toevoegen: foto van het prototype)
 
@@ -345,7 +348,7 @@ Reden: tijdens een `delay()` staat de code stil. Dan mist de ketting een druk op
 
 ### Toegankelijkheid
 
-- **Kleurenblindheid:** groen (single) en rood (bezet) zijn voor mensen met de meest voorkomende kleurenblindheid lastig uit elkaar te houden. Dat is een zwak punt (zie hoofdstuk 11).
+- **Kleurenblindheid:** groen (single) en rood (bezet) zijn voor mensen met de meest voorkomende kleurenblindheid lastig uit elkaar te houden. Dat is een zwak punt (zie hoofdstuk 11). Ingewikkeld is blauw; dat kunnen ook kleurenblinden goed onderscheiden.
 - **Spanning zonder kleur:** of iemand boven zijn grens zit, zie je aan de helderheid. Dat werkt ook voor kleurenblinden.
 - **Knop:** één knop die je op de tast kunt vinden. Er is geen scherm of app nodig.
 
@@ -355,14 +358,21 @@ Reden: tijdens een `delay()` staat de code stil. Dan mist de ketting een druk op
 |-----------|------------------|---------------------|
 | Op een feest is de hartslag ook hoog door dansen. | Fel betekent niet altijd "verliefd". Op de dansvloer is bijna iedereen fel. | De rustpols helpt een beetje, want iedereen heeft zijn eigen grens. Een hogere `GRENS_FACTOR` helpt ook. |
 | De rustpols wordt alleen bij het aanzetten gemeten. | Ben je dan net binnen na het fietsen, dan is de rustpols te hoog en wordt de ketting bijna nooit fel. | Aanzetten bij de ingang, na even stil staan. Of opnieuw meten met een extra knopbediening. |
-| Rood en groen zijn lastig voor kleurenblinden. | Single en bezet kunnen worden verward. Dat is de belangrijkste informatie. | Bezet blauw maken. Of na een korte druk 1, 2 of 3 keer knipperen. Bespreken met 013. |
+| Rood en groen zijn lastig voor kleurenblinden. | Single en bezet kunnen worden verward. Dat is de belangrijkste informatie. | De derde led is al blauw (ingewikkeld). Blauw is voor de meeste kleurenblinden goed te onderscheiden van rood en groen. Dat helpt, maar lost het verschil tussen single en bezet niet op. Daarvoor: bezet blauw maken, of na een korte druk 1, 2 of 3 keer knipperen. Bespreken met 013. |
 | Het verschil tussen 40% en 100% is in een zaal met veel licht lastig te zien. | Spanning valt minder op dan bedoeld. | Testen in fase 3. Eventueel 20% in plaats van 40%. |
 | Een sensor in een ketting meet niet goed. | De ketting hangt los en beweegt bij het dansen. De hartslag is dan onbetrouwbaar. | Daarom US-05: een wearable om de pols meet beter. |
 | Niet elke bezoeker heeft een Whoop of smartwatch. | Zonder wearable is alleen de ingebouwde sensor er. | Is afgedekt door AC-05.2. |
 | Bluetooth kost stroom. | De batterij moet een hele avond meegaan. | Meten in het echte product. |
+| Hoge rustpols geeft een onbereikbare grens (issue #18). | Vanaf een rustpols van 145 BPM komt de grens boven 180 BPM uit (145 × 1,25 = 182). De hartslag gaat niet hoger dan `BPM_MAX` = 180, dus de ketting kan nooit fel worden. | De grens begrenzen op `BPM_MAX`. Of de rustpols opnieuw meten. |
 
 ## 12. Akkoord opdrachtgever
 
 | Datum | Naam opdrachtgever | Versie ontwerp | Opmerkingen | Akkoord (ja/nee) | Handtekening |
 |-------|--------------------|----------------|-------------|------------------|--------------|
 | | | | | | |
+
+Te melden bij akkoord:
+
+- AC-02.1 is aangepast: de potmeter zit op GPIO 4 in plaats van A0.
+- Drie losse leds in plaats van een RGB-led.
+- Ingewikkeld is blauw in plaats van oranje.
