@@ -1,0 +1,36 @@
+@startuml usecasediagram
+title Use case diagram Hartslagketting
+skinparam defaultFontName Arial
+left to right direction
+
+actor "Bezoeker\n(drager)" as Drager
+actor "Andere bezoeker\n(kijkt naar de ketting)" as Kijker
+actor "Wearable\n(WHOOP / smartwatch)" as Wearable <<secundair>>
+
+rectangle "Hartslagketting" {
+  usecase "Status kiezen\n(US-01)" as UC1
+  usecase "Hartslag tonen /\nhart klopt mee\n(US-02)" as UC2
+  usecase "Spanning tonen\n(US-03)" as UC3
+  usecase "Rustpols meten" as UC3a
+  usecase "Hartslag verbergen /\nstilstand\n(US-04)" as UC4
+  usecase "Wearable koppelen\n(US-05)\n«echte product»" as UC5
+}
+
+Drager --> UC1
+Drager --> UC2
+Drager --> UC3
+Drager --> UC4
+Drager --> UC5
+
+UC1 --> Kijker
+UC2 --> Kijker
+UC3 --> Kijker
+
+UC3 ..> UC3a : <<include>>
+UC5 --> Wearable
+
+note right of UC5
+  Alleen in het echte product.
+  Niet in het prototype (Wokwi heeft geen Bluetooth).
+end note
+@enduml
