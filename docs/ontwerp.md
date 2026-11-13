@@ -187,9 +187,11 @@ We slaan niets op. Alles staat alleen in het werkgeheugen en is weg als de ketti
 | `bpmSom` | long | 0 | Optelling van alle metingen in de eerste 10 s |
 | `aantalMetingen` | int | 0 | Aantal metingen in de eerste 10 s |
 | `rustpols` | int | 0 | Gemiddelde hartslag van de eerste 10 s |
-| `grens` | int | 0 | rustpols × 1,25 |
+| `grens` | int | 0 | rustpols × 1,25, naar boven afgerond |
+| `startTijd` | unsigned long | 0 | Tijdstip van het aanzetten, in ms. Hiermee meten we de 10 s |
 | `laatsteKnipper` | unsigned long | 0 | Tijdstip van de laatste knipper, in ms |
 | `knopIngedruktSinds` | unsigned long | 0 | Tijdstip waarop de knop werd ingedrukt, in ms |
+| `knopWasIngedrukt` | bool | false | Was de knop de vorige ronde ingedrukt. Zo zien we het moment van indrukken en loslaten |
 
 ### Constanten
 
@@ -202,7 +204,7 @@ We slaan niets op. Alles staat alleen in het werkgeheugen en is weg als de ketti
 | `HELDER_MAX` | 100 | Helderheid in procent, boven de grens |
 | `LANG_DRUKKEN_MS` | 2000 | Vanaf hoe lang een druk "lang" is (AC-01.1, AC-04.1) |
 | `FLITS_MS` | 100 | Hoe lang de led aan is per knipper |
-| `ONTDENDER_MS` | 50 | Wachttijd tegen het denderen van de knop |
+| `ONTDENDER_MS` | 50 | Een druk korter dan dit telt niet. Zo telt het denderen van de knop niet als druk |
 | `PIN_GROEN`, `PIN_ROOD`, `PIN_ORANJE` | 21, 19, 18 | Pinnen van de drie leds |
 | `PIN_KNOP`, `PIN_POT` | 23, 4 | Overige pinnen |
 
@@ -210,7 +212,7 @@ Onderbouwing:
 
 - **Constanten met een naam.** Elke waarde uit de acceptatiecriteria staat op één plek. Wil 013 iets anders, dan passen we alleen die constante aan.
 - **Tempo.** De tijd tussen twee knippers is 60000 / bpm milliseconden. Bij 60 bpm is dat 1000 ms, dus één knipper per seconde (AC-02.2).
-- **Binnen 2 seconden terug (AC-03.3).** We kiezen de helderheid bij elke knipper opnieuw. De langzaamste hartslag is 50 bpm, dus er zit hooguit 1,2 s tussen twee knippers. Dat is binnen de 2 seconden.
+- **Binnen 2 seconden terug (AC-03.3).** We kiezen de helderheid in elke ronde van de lus opnieuw, ongeveer elke 5 ms. Zakt de hartslag onder de grens, dan is de volgende knipper al weer op 40%. De langzaamste hartslag is 50 bpm, dus er zit hooguit 1,2 s tussen twee knippers. Dat is binnen de 2 seconden.
 - **Tijdens het meten.** De eerste 10 s is er nog geen grens. De led knippert dan gewoon op 40%.
 
 ### Kleuren
