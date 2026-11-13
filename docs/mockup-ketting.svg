@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1120" height="760" viewBox="0 0 1120 760" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <!-- Hartvorm, 90 x 85 eenheden (schaal: 280 px = 7 cm, dus 40 px per cm) -->
+    <symbol id="hart" viewBox="-50 -50 100 100" overflow="visible">
+      <path d="M0,40 C-60,0 -55,-45 -25,-45 C-10,-45 0,-35 0,-25 C0,-35 10,-45 25,-45 C55,-45 60,0 0,40 Z"/>
+    </symbol>
+    <radialGradient id="gloedGroen"><stop offset="0" stop-color="#2ecc40" stop-opacity="0.75"/><stop offset="1" stop-color="#2ecc40" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gloedRood"><stop offset="0" stop-color="#e62e2e" stop-opacity="0.75"/><stop offset="1" stop-color="#e62e2e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gloedBlauw"><stop offset="0" stop-color="#2f6fe6" stop-opacity="0.75"/><stop offset="1" stop-color="#2f6fe6" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gloedFel"><stop offset="0" stop-color="#ffffff" stop-opacity="1"/><stop offset="0.25" stop-color="#2ecc40" stop-opacity="1"/><stop offset="1" stop-color="#2ecc40" stop-opacity="0.15"/></radialGradient>
+    <radialGradient id="gloedDim"><stop offset="0" stop-color="#2ecc40" stop-opacity="0.35"/><stop offset="1" stop-color="#2ecc40" stop-opacity="0"/></radialGradient>
+    <marker id="pijl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#555"/></marker>
+  </defs>
+
+  <rect width="1120" height="760" fill="#ffffff"/>
+  <text x="560" y="38" font-size="24" font-weight="bold" text-anchor="middle" fill="#222">Mock-up Hartslagketting 013</text>
+  <text x="560" y="62" font-size="14" text-anchor="middle" fill="#666">Hart van melkwit plastic, ongeveer 7 × 7 cm, aan een koord om de nek</text>
+
+  <!-- ============ VOORAANZICHT ============ -->
+  <text x="250" y="100" font-size="17" font-weight="bold" text-anchor="middle" fill="#222">Vooraanzicht</text>
+  <!-- koord -->
+  <path d="M150,110 Q200,170 250,236" fill="none" stroke="#8a5a3c" stroke-width="4"/>
+  <path d="M350,110 Q300,170 250,236" fill="none" stroke="#8a5a3c" stroke-width="4"/>
+  <circle cx="250" cy="236" r="6" fill="none" stroke="#999" stroke-width="3"/>
+  <!-- hart -->
+  <use xlink:href="#hart" x="110" y="230" width="280" height="280" fill="#f8f5ee" stroke="#b9b2a5" stroke-width="1.2"/>
+  <!-- led-gloed en led -->
+  <circle cx="250" cy="355" r="85" fill="url(#gloedGroen)"/>
+  <circle cx="250" cy="355" r="9" fill="#2ecc40" stroke="#1a7a26" stroke-width="1.5"/>
+  <!-- knop aan de zijkant (rechts) -->
+  <rect x="381" y="322" width="14" height="30" rx="4" fill="#d9d4ca" stroke="#8c867b" stroke-width="1.5"/>
+  <!-- maatlijnen -->
+  <line x1="110" y1="525" x2="390" y2="525" stroke="#555" stroke-width="1.2" marker-start="url(#pijl)" marker-end="url(#pijl)"/>
+  <text x="250" y="545" font-size="13" text-anchor="middle" fill="#555">ca. 7 cm</text>
+  <line x1="90" y1="247" x2="90" y2="482" stroke="#555" stroke-width="1.2" marker-start="url(#pijl)" marker-end="url(#pijl)"/>
+  <text x="80" y="370" font-size="13" text-anchor="middle" fill="#555" transform="rotate(-90 80 370)">ca. 7 cm</text>
+  <!-- labels -->
+  <line x1="259" y1="358" x2="300" y2="420" stroke="#444"/>
+  <text x="302" y="434" font-size="13" fill="#222">Led in het midden</text>
+  <text x="302" y="450" font-size="12" fill="#666">heel het hart licht op</text>
+  <line x1="395" y1="337" x2="420" y2="337" stroke="#444"/>
+  <text x="424" y="333" font-size="13" fill="#222">Knop aan de zijkant</text>
+  <text x="424" y="349" font-size="12" fill="#666">kort: status</text>
+  <text x="424" y="364" font-size="12" fill="#666">lang (≥ 2 s): stilstand</text>
+  <text x="138" y="128" font-size="13" fill="#222" text-anchor="end">Koord met</text>
+  <text x="138" y="144" font-size="12" fill="#666" text-anchor="end">breeksluiting</text>
+
+  <!-- ============ ACHTERAANZICHT ============ -->
+  <text x="830" y="100" font-size="17" font-weight="bold" text-anchor="middle" fill="#222">Achteraanzicht</text>
+  <path d="M730,110 Q780,170 830,236" fill="none" stroke="#8a5a3c" stroke-width="4"/>
+  <path d="M930,110 Q880,170 830,236" fill="none" stroke="#8a5a3c" stroke-width="4"/>
+  <circle cx="830" cy="236" r="6" fill="none" stroke="#999" stroke-width="3"/>
+  <use xlink:href="#hart" x="690" y="230" width="280" height="280" fill="#efebe2" stroke="#b9b2a5" stroke-width="1.2"/>
+  <!-- ESP32 binnenin (gestippeld) -->
+  <rect x="775" y="300" width="110" height="60" rx="4" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="830" y="335" font-size="12" text-anchor="middle" fill="#555">ESP32 (binnenin)</text>
+  <!-- batterij (gestippeld) -->
+  <rect x="795" y="370" width="70" height="26" rx="4" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="830" y="388" font-size="11" text-anchor="middle" fill="#555">batterij</text>
+  <!-- sensor tegen de huid -->
+  <circle cx="830" cy="425" r="16" fill="#5a5a5a" stroke="#333" stroke-width="1.5"/>
+  <circle cx="824" cy="425" r="4" fill="#7cff7c"/>
+  <circle cx="836" cy="425" r="4" fill="#ff5c5c"/>
+  <!-- knop zit in het achteraanzicht links -->
+  <rect x="685" y="322" width="14" height="30" rx="4" fill="#d9d4ca" stroke="#8c867b" stroke-width="1.5"/>
+  <!-- labels -->
+  <line x1="846" y1="428" x2="905" y2="470" stroke="#444"/>
+  <text x="908" y="474" font-size="13" fill="#222">Hartslagsensor</text>
+  <text x="908" y="490" font-size="12" fill="#666">tegen de huid (echte product)</text>
+  <line x1="885" y1="318" x2="972" y2="290" stroke="#444"/>
+  <text x="975" y="286" font-size="12" fill="#666">gestippeld = binnenin</text>
+  <line x1="685" y1="337" x2="660" y2="337" stroke="#444"/>
+  <text x="656" y="333" font-size="13" fill="#222" text-anchor="end">Knop</text>
+  <text x="830" y="545" font-size="12" text-anchor="middle" fill="#666">Prototype: potmeter doet de sensor na, stroom via USB</text>
+
+  <!-- ============ TOESTANDEN ============ -->
+  <line x1="40" y1="575" x2="1080" y2="575" stroke="#ddd"/>
+  <text x="560" y="603" font-size="17" font-weight="bold" text-anchor="middle" fill="#222">Toestanden van de ketting</text>
+
+  <!-- single -->
+  <use xlink:href="#hart" x="85" y="610" width="110" height="110" fill="#f8f5ee" stroke="#b9b2a5"/>
+  <circle cx="140" cy="657" r="34" fill="url(#gloedGroen)"/>
+  <circle cx="140" cy="657" r="4" fill="#2ecc40"/>
+  <text x="140" y="728" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a7a26">Single</text>
+  <text x="140" y="745" font-size="11" text-anchor="middle" fill="#666">groen, knippert 40%</text>
+
+  <!-- bezet -->
+  <use xlink:href="#hart" x="295" y="610" width="110" height="110" fill="#f8f5ee" stroke="#b9b2a5"/>
+  <circle cx="350" cy="657" r="34" fill="url(#gloedRood)"/>
+  <circle cx="350" cy="657" r="4" fill="#e62e2e"/>
+  <text x="350" y="728" font-size="14" font-weight="bold" text-anchor="middle" fill="#b02020">Bezet</text>
+  <text x="350" y="745" font-size="11" text-anchor="middle" fill="#666">rood, knippert 40%</text>
+
+  <!-- ingewikkeld -->
+  <use xlink:href="#hart" x="505" y="610" width="110" height="110" fill="#f8f5ee" stroke="#b9b2a5"/>
+  <circle cx="560" cy="657" r="34" fill="url(#gloedBlauw)"/>
+  <circle cx="560" cy="657" r="4" fill="#2f6fe6"/>
+  <text x="560" y="728" font-size="14" font-weight="bold" text-anchor="middle" fill="#2050b0">Ingewikkeld</text>
+  <text x="560" y="745" font-size="11" text-anchor="middle" fill="#666">blauw, knippert 40%</text>
+
+  <!-- spanning -->
+  <use xlink:href="#hart" x="715" y="610" width="110" height="110" fill="#e9fbe9" stroke="#2ecc40" stroke-width="1.5"/>
+  <circle cx="770" cy="657" r="44" fill="url(#gloedFel)"/>
+  <circle cx="770" cy="657" r="5" fill="#ffffff" stroke="#2ecc40"/>
+  <path d="M708,640 q-8,17 0,34 M698,634 q-12,23 0,46 M832,640 q8,17 0,34 M842,634 q12,23 0,46" fill="none" stroke="#2ecc40" stroke-width="2"/>
+  <text x="770" y="728" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a7a26">Spanning</text>
+  <text x="770" y="745" font-size="11" text-anchor="middle" fill="#666">bpm ≥ grens: knippert 100%</text>
+
+  <!-- stilstand -->
+  <use xlink:href="#hart" x="925" y="610" width="110" height="110" fill="#f3f1ec" stroke="#b9b2a5"/>
+  <circle cx="980" cy="657" r="30" fill="url(#gloedDim)"/>
+  <circle cx="980" cy="657" r="4" fill="#7fbf86"/>
+  <text x="980" y="728" font-size="14" font-weight="bold" text-anchor="middle" fill="#555">Stilstand</text>
+  <text x="980" y="745" font-size="11" text-anchor="middle" fill="#666">gedimd, brandt continu</text>
+</svg>
