@@ -40,3 +40,18 @@ Zo zet je het op:
 | `docs/` | Het ontwerp: [docs/ontwerp.md](docs/ontwerp.md) |
 | `src/hartketting/` | De code voor de ESP32 (`hartketting.ino`), het Wokwi-schema (`diagram.json`) en `wokwi.toml` |
 | `platformio.ini` | Instellingen van PlatformIO: bord en vaste versies |
+| `tools/presentatiescherm/` | Presentatiescherm voor de beamer |
+
+## Presentatiescherm
+
+De ketting zelf is te klein om aan een zaal te laten zien. Het presentatiescherm is een webpagina die live meeleest met de ESP32 via USB en de ketting groot op de beamer toont: het hart klopt op de hartslag in de statuskleur, en je ziet de BPM, de bron, de rustpols en de grens.
+
+Gebruik:
+
+1. Sluit de Serial Monitor (die houdt de USB-poort bezet).
+2. Open `tools/presentatiescherm/index.html` in Chrome of Edge (andere browsers ondersteunen Web Serial niet).
+3. Klik op "Verbind met ESP32" en kies de usbserial-poort.
+4. Druk op EN op de ESP32, zodat hij opnieuw start en de rustpols meet.
+5. Fullscreen met ⌃⌘F.
+
+Reserve: werkt de verbinding niet, klik dan op "Demo-modus". Met **S** wissel je de status, met **H** zet je de stilstand aan of uit en met **↑/↓** gaat de hartslag omhoog of omlaag.
